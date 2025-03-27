@@ -36,7 +36,6 @@ int main()
 		{
 			getline(cin, message);
 			boost::asio::write(socket, boost::asio::buffer(message + "\n"));
-
 		}
 
 	}
