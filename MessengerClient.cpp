@@ -8,38 +8,15 @@ using boost::asio::ip::tcp;
 using json = nlohmann::json;
 
 
-#define BUFFER_SIZE 1024
 
-const std::string DEFAULT_ADDRESS = "192.168.0.107";
-const int DEFAULT_PORT = 42001;
+std::string DEFAULT_ADDRESS = "192.168.0.107";
+int DEFAULT_PORT = 42001;
 
-void read_messages(tcp::socket& socket) {
-	boost::asio::streambuf buffer;
-	while (true) {
-		boost::asio::read_until(socket, buffer, '\n');
-		std::string message(boost::asio::buffers_begin(buffer.data()),
-			boost::asio::buffers_begin(buffer.data()) + buffer.size());
-		buffer.consume(buffer.size());
-		std::cout << "Message: " << message << std::endl;
-	}
-}
 
-int main()
-{
-	try {
-		boost::asio::io_context io_context;
-		ChatClient client(io_context, DEFAULT_ADDRESS, DEFAULT_PORT);
-		client.start();
-	}
-	catch (std::exception& e)
-	{
-		std::cerr << e.what() << std::endl;
-	}
-}
 
 class ChatClient {
 public:
-	ChatClient(boost::asio::io_context& io_context, const std::string& address, int port)
+	ChatClient(boost::asio::io_context& io_context, std::string& address, int port)
 		: socket_(io_context) {
 		socket_.connect(tcp::endpoint(boost::asio::ip::make_address(address), port));
 		std::cout << "Connected to server" << std::endl;
@@ -62,9 +39,9 @@ private:
 		std::string login, password;
 		std::cout << "Login: ";
 		std::getline(std::cin, login);
-		std::cout << "Password";
+		std::cout << "Password: ";
 		std::getline(std::cin, password);
-
+		
 		json auth_request = {
 			{"type", "auth"},
 			{"login", login},
@@ -94,7 +71,8 @@ private:
 
 	void send_messages() {
 		std::string text;
-		while (std::getline(std::cin, text)) {
+		while (true) {
+			std::getline(std::cin, text);
 			json msg = {
 				{"user_id", user_id_},
 				{"chat_id", chat_id_},
@@ -111,7 +89,31 @@ private:
 			boost::asio::read_until(socket_, buffer, '\n');
 			std::string message(boost::asio::buffers_begin(buffer.data()), boost::asio::buffers_begin(buffer.data()) + buffer.size());
 			buffer.consume(buffer.size());
-			std::cout << "Message: " << message << std::endl;
+			json j;
+			try {
+				j = json::parse(message);
+			}
+			catch (const json::parse_error& e) {
+				std::cerr << "Parse error: " << e.what() << std::endl;
+				continue;
+			}
+			uint32_t u_id = j.value("user_id", -1);
+
+
+			std::cout << "User_" << u_id << ": " << j.value("text", "") << std::endl;
 		}
 	}
 };
+
+int main()
+{
+	try {
+		boost::asio::io_context io_context;
+		ChatClient client(io_context, DEFAULT_ADDRESS, DEFAULT_PORT);
+		client.start();
+	}
+	catch (std::exception& e)
+	{
+		std::cerr << e.what() << std::endl;
+	}
+}
