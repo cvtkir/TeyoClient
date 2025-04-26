@@ -23,19 +23,43 @@ public:
 	}
 
 	void start() {
-		if (authorize()) {
-			std::thread reader(&ChatClient::read_messages, this);
-			send_messages();
-			reader.join();
-		}
+		std::thread reader(&ChatClient::read_messages, this);
+		control();
+		reader.join();
+
 	}
 
 private:
 	tcp::socket socket_;
 	unsigned int user_id_ = 0;
 	unsigned int chat_id_ = 1;
+	bool is_authorized_ = false;
 
-	bool authorize() {
+	void control() {
+		std::string command;
+		while (true) {
+			std::getline(std::cin, command);
+			if (command == "exit") {
+				break;
+			}
+			else if (command == "signup" || command == "login") {
+				if (authorize(command)) {
+					std::cout << "Authorized successfully." << std::endl;
+				}
+				else {
+					std::cout << "Authorization failed." << std::endl;
+				}
+			}
+			else if (command == "msg" && is_authorized_) {
+				send_message();
+			}
+			else {
+				std::cout << "Available commands: signup, login, msg, exit" << std::endl;
+			}
+		}
+	}
+
+	bool authorize(std::string type) {
 		std::string login, password;
 		std::cout << "Login: ";
 		std::getline(std::cin, login);
@@ -43,7 +67,7 @@ private:
 		std::getline(std::cin, password);
 		
 		json auth_request = {
-			{"type", "auth"},
+			{"type", type},
 			{"login", login},
 			{"password", password}
 		};
@@ -59,28 +83,27 @@ private:
 
 		json auth_response = json::parse(response);
 		if (auth_response["type"] == "auth_success") {
-			user_id_ = auth_response["user_id"];
-			std::cout << "Authorized successfully. Your user_id is " << user_id_ << "\n";
+			//user_id_ = auth_response["user_id"];
+			std::cout << auth_response["message"] << "\n";
 			return true;
 		}
 		else {
-			std::cout << "Authorization failed.\n";
+			std::cout << auth_response["message"] << "\n";
 			return false;
 		}
 	}
 
-	void send_messages() {
+	void send_message() {
 		std::string text;
-		while (true) {
-			std::getline(std::cin, text);
-			json msg = {
-				{"user_id", user_id_},
-				{"chat_id", chat_id_},
-				{"text", text}
-			};
-			std::string serialized = msg.dump() + "\n";
-			boost::asio::write(socket_, boost::asio::buffer(serialized));
-		}
+		std::getline(std::cin, text);
+		json msg = {
+			{"user_id", user_id_},
+			{"chat_id", chat_id_},
+			{"text", text}
+		};
+		std::string serialized = msg.dump() + "\n";
+		boost::asio::write(socket_, boost::asio::buffer(serialized));
+		
 	}
 
 	void read_messages() {
