@@ -23,9 +23,9 @@ public:
 	}
 
 	void start() {
-		std::thread reader(&ChatClient::read_messages, this);
+		//std::thread reader(&ChatClient::read_messages, this);
 		control();
-		reader.join();
+		//reader.join();
 
 	}
 
@@ -74,9 +74,10 @@ private:
 
 		std::string serialized = auth_request.dump() + "\n";
 		boost::asio::write(socket_, boost::asio::buffer(serialized));
-
+		std::cout << "sent auth request" << std::endl;
 		boost::asio::streambuf buffer;
 		boost::asio::read_until(socket_, buffer, '\n');
+		std::cout << "reading answer" << std::endl;
 
 		std::string response(boost::asio::buffers_begin(buffer.data()), boost::asio::buffers_begin(buffer.data()) + buffer.size());
 		buffer.consume(buffer.size());
@@ -85,7 +86,7 @@ private:
 		if (auth_response["type"] == "auth_success") {
 			//user_id_ = auth_response["user_id"];
 			std::cout << auth_response["message"] << "\n";
-			return true;
+			return is_authorized_ = true;
 		}
 		else {
 			std::cout << auth_response["message"] << "\n";
@@ -120,10 +121,9 @@ private:
 				std::cerr << "Parse error: " << e.what() << std::endl;
 				continue;
 			}
-			uint32_t u_id = j.value("user_id", -1);
-
-
-			std::cout << "User_" << u_id << ": " << j.value("text", "") << std::endl;
+			//uint32_t u_id = j.value("user_id", -1);
+			//std::cout << "User_" << u_id << ": " << j.value("text", "") << std::endl;
+			std::cout << j.value("message", "") << std::endl;
 		}
 	}
 };

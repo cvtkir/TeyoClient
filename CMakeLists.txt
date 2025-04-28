@@ -11,14 +11,22 @@ cmake_minimum_required (VERSION 3.21)
 
 project ("TeyoClient")
 
+file(GLOB_RECURSE SOURCES CONFIGURE_DEPENDS src/*.cpp)
+
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CNAKE_CXX_EXTENSIONS OFF)
 
 find_package(Boost REQUIRED)
 find_package(nlohmann_json REQUIRED)
 
 # Add source to this project's executable.
-add_executable (TeyoClient  "main.cpp")
+add_executable (TeyoClient ${SOURCES})
+
+target_include_directories(${PROJECT_NAME}
+    PRIVATE
+        ${CMAKE_CURRENT_SOURCE_DIR}/include
+)
 
 target_link_libraries(TeyoClient
 	PRIVATE
