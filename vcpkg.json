@@ -3,10 +3,7 @@
 	"version-string": "1.0.0",
 	"dependencies": [
 	"boost",
-    "nlohmann-json",
-	"qtbase",
-    "qttools",
-    "qtimageformats"
+    "nlohmann-json"
   ],
   "builtin-baseline": "33b302a46eff35d8a308b20465b53249eee77a31"
 }

@@ -13,7 +13,7 @@ public:
     MainWindow(QWidget *parent = nullptr);
 
 private:
-    LoginWidget *loginWidget;
+    LoginWidget *m_loginWidget;
     // QTabWidget *tabWidget; // Uncomment if you want to use tab widget
     // QToolBar *toolBar; // Uncomment if you want to use tool bar
 
