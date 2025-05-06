@@ -3,6 +3,8 @@
 #include <thread>
 #include <boost/asio.hpp>
 #include <nlohmann/json.hpp>
+#include <QApplication>
+
 
 using boost::asio::ip::tcp;
 using json = nlohmann::json;
@@ -131,13 +133,16 @@ private:
 
 int main()
 {
-	try {
-		boost::asio::io_context io_context;
-		ChatClient client(io_context, DEFAULT_ADDRESS, DEFAULT_PORT);
-		client.start();
-	}
-	catch (std::exception& e)
-	{
-		std::cerr << e.what() << std::endl;
-	}
+	std::string a;
+	std::cin >> a;
+	std::cout << a << std::endl;
+	// try {
+	// 	boost::asio::io_context io_context;
+	// 	ChatClient client(io_context, DEFAULT_ADDRESS, DEFAULT_PORT);
+	// 	client.start();
+	// }
+	// catch (std::exception& e)
+	// {
+	// 	std::cerr << e.what() << std::endl;
+	// }
 }
