@@ -2,22 +2,23 @@
 #define MAINWINDOW_HPP
 
 #include <QMainWindow>
-
+#include <QStackedWidget>
+#include "startwidget.hpp"
 #include "loginwidget.hpp"
-
+#include "signupwidget.hpp"
 
 
 class MainWindow : public QMainWindow {
     Q_OBJECT
 public:
     MainWindow(QWidget *parent = nullptr);
+    ~MainWindow();
 
 private:
-    LoginWidget *m_loginWidget;
-    // QTabWidget *tabWidget; // Uncomment if you want to use tab widget
-    // QToolBar *toolBar; // Uncomment if you want to use tool bar
+    StartWidget *m_startWidget = nullptr;
+    LoginWidget *m_loginWidget = nullptr;
+    SignupWidget *m_signupWidget = nullptr;
 
-    // Add other UI components and methods as needed
 };
 
 #endif

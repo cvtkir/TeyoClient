@@ -1,13 +1,13 @@
-#include "loginwidget.hpp"
+#include "signupwidget.hpp"
 
-LoginWidget::LoginWidget(QWidget *parent) : QWidget(parent) {
+SignupWidget::SignupWidget(QWidget *parent) : QWidget(parent) {
     setupUI();
     setupStyles();
 }
 
-void LoginWidget::setupUI() {
-    QVBoxLayout *loginLayout = new QVBoxLayout(this);
-    loginLayout->setAlignment(Qt::AlignCenter);
+void SignupWidget::setupUI() {
+    QVBoxLayout *signupLayout = new QVBoxLayout(this);
+    signupLayout->setAlignment(Qt::AlignCenter);
     
     QHBoxLayout *topLayout = new QHBoxLayout();
     topLayout->setAlignment(Qt::AlignLeft | Qt::AlignTop);
@@ -24,31 +24,34 @@ void LoginWidget::setupUI() {
     m_passwordEdit = new QLineEdit(this);
     m_passwordEdit->setPlaceholderText("Password");
     m_passwordEdit->setEchoMode(QLineEdit::Password);
-    m_loginButton = new QPushButton("Log in", this);
+    m_passconfEdit = new QLineEdit(this);
+    m_passconfEdit->setPlaceholderText("Confirm Password");
+    m_passconfEdit->setEchoMode(QLineEdit::Password);
+    m_signupButton = new QPushButton("Sign up", this);
 
     centerLayout->addWidget(m_usernameEdit);
     centerLayout->addSpacing(10);
     centerLayout->addWidget(m_passwordEdit);
     centerLayout->addSpacing(10);
-    centerLayout->addWidget(m_loginButton);
+    centerLayout->addWidget(m_passconfEdit);
+    centerLayout->addSpacing(10);
+    centerLayout->addWidget(m_signupButton);
 
-    loginLayout->addLayout(topLayout);
-    loginLayout->addSpacerItem(new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding));
-    loginLayout->addWidget(centerWidget, 0, Qt::AlignCenter);
-    loginLayout->addSpacerItem(new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding));
-    
-    // Сигналы
+    signupLayout->addLayout(topLayout);
+    signupLayout->addSpacerItem(new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding));
+    signupLayout->addWidget(centerWidget);
+    signupLayout->addSpacerItem(new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding));
+
+    connect(m_signupButton, &QPushButton::clicked, this, [this]() {
+        emit signupAttempt(m_usernameEdit->text(), m_passwordEdit->text());
+    });
     connect(m_backButton, &QPushButton::clicked, this, [this]() {
         emit backRequested();
-    });
-
-    connect(m_loginButton, &QPushButton::clicked, this, [this]() {
-        emit loginAttempt(m_usernameEdit->text(), m_passwordEdit->text());
     });
 }
 
 
-void LoginWidget::setupStyles() {
+void SignupWidget::setupStyles() {
     // Установка стилей для элементов
     setStyleSheet(R"(
         QWidget {
@@ -97,12 +100,5 @@ void LoginWidget::setupStyles() {
     m_backButton->setObjectName("back");
     
     // Дополнительные эффекты
-    m_loginButton->setCursor(Qt::PointingHandCursor);
+    m_signupButton->setCursor(Qt::PointingHandCursor);
 }
-
-// void LoginWidget::handleLogin() {
-//     QString username = m_usernameEdit->text();
-//     QString password = m_passwordEdit->text();
-
-//     emit loginAttempt(username, password);
-// }

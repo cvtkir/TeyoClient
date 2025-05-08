@@ -1,5 +1,5 @@
-#ifndef LOGINWIDGET_HPP
-#define LOGINWIDGET_HPP
+#ifndef SIGNUPWIDGET_HPP
+#define SIGNUPWIDGET_HPP
 
 #include <QWidget>
 #include <QLineEdit>
@@ -10,20 +10,21 @@
 #include <QSpacerItem>
 #include <QDebug>
 
-class LoginWidget : public QWidget {
+class SignupWidget : public QWidget {
     Q_OBJECT
 
 public:
-    explicit LoginWidget(QWidget *parent = nullptr);
+    explicit SignupWidget(QWidget *parent = nullptr);
     
 signals:
-    void loginAttempt(const QString &username, const QString &password);
+    void signupAttempt(const QString &username, const QString &password);
     void backRequested();
 
 private:
     QLineEdit *m_usernameEdit;
     QLineEdit *m_passwordEdit;
-    QPushButton *m_loginButton;
+    QLineEdit *m_passconfEdit;
+    QPushButton *m_signupButton;
     QPushButton *m_backButton;
 
     void setupUI();
@@ -31,7 +32,7 @@ private:
 
 
 // private slots:
-//     void handleLogin();
+    // void handleSignup();
 
 
 };
