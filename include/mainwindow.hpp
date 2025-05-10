@@ -3,9 +3,7 @@
 
 #include <QMainWindow>
 #include <QStackedWidget>
-#include "startwidget.hpp"
-#include "loginwidget.hpp"
-#include "signupwidget.hpp"
+#include "authwidget.hpp"
 
 
 class MainWindow : public QMainWindow {
@@ -15,9 +13,8 @@ public:
     ~MainWindow();
 
 private:
-    StartWidget *m_startWidget = nullptr;
-    LoginWidget *m_loginWidget = nullptr;
-    SignupWidget *m_signupWidget = nullptr;
+    AuthWidget *authWidget_;
+    // ChatWidget *chatWidget_; 
 
 };
 

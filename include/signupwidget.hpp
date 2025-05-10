@@ -21,11 +21,11 @@ signals:
     void backRequested();
 
 private:
-    QLineEdit *m_usernameEdit;
-    QLineEdit *m_passwordEdit;
-    QLineEdit *m_passconfEdit;
-    QPushButton *m_signupButton;
-    QPushButton *m_backButton;
+    QLineEdit *usernameEdit_;
+    QLineEdit *passwordEdit_;
+    QLineEdit *passconfEdit_;
+    QPushButton *signupButton_;
+    QPushButton *backButton_;
 
     void setupUI();
     void setupStyles();

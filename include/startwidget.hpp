@@ -17,10 +17,10 @@ signals:
     void signupRequested();
 
 private:
-    QLabel *m_titleLabel;
-    QLabel *m_subtitleLabel;
-    QPushButton *m_loginButton;
-    QPushButton *m_signupButton;
+    QLabel *titleLabel_;
+    QLabel *subtitleLabel_;
+    QPushButton *loginButton_;
+    QPushButton *signupButton_;
 
     void setupUI();
     void setupStyles();

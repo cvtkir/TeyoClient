@@ -11,41 +11,41 @@ void SignupWidget::setupUI() {
     
     QHBoxLayout *topLayout = new QHBoxLayout();
     topLayout->setAlignment(Qt::AlignLeft | Qt::AlignTop);
-    m_backButton = new QPushButton("←", this);
-    topLayout->addWidget(m_backButton);
+    backButton_ = new QPushButton("←", this);
+    topLayout->addWidget(backButton_);
     topLayout->addStretch();
 
     QWidget *centerWidget = new QWidget(this);
     QVBoxLayout *centerLayout = new QVBoxLayout(centerWidget);
     centerLayout->setAlignment(Qt::AlignCenter);
     
-    m_usernameEdit = new QLineEdit(this);
-    m_usernameEdit->setPlaceholderText("Login");
-    m_passwordEdit = new QLineEdit(this);
-    m_passwordEdit->setPlaceholderText("Password");
-    m_passwordEdit->setEchoMode(QLineEdit::Password);
-    m_passconfEdit = new QLineEdit(this);
-    m_passconfEdit->setPlaceholderText("Confirm Password");
-    m_passconfEdit->setEchoMode(QLineEdit::Password);
-    m_signupButton = new QPushButton("Sign up", this);
+    usernameEdit_ = new QLineEdit(this);
+    usernameEdit_->setPlaceholderText("Login");
+    passwordEdit_ = new QLineEdit(this);
+    passwordEdit_->setPlaceholderText("Password");
+    passwordEdit_->setEchoMode(QLineEdit::Password);
+    passconfEdit_ = new QLineEdit(this);
+    passconfEdit_->setPlaceholderText("Confirm Password");
+    passconfEdit_->setEchoMode(QLineEdit::Password);
+    signupButton_ = new QPushButton("Sign up", this);
 
-    centerLayout->addWidget(m_usernameEdit);
+    centerLayout->addWidget(usernameEdit_);
     centerLayout->addSpacing(10);
-    centerLayout->addWidget(m_passwordEdit);
+    centerLayout->addWidget(passwordEdit_);
     centerLayout->addSpacing(10);
-    centerLayout->addWidget(m_passconfEdit);
+    centerLayout->addWidget(passconfEdit_);
     centerLayout->addSpacing(10);
-    centerLayout->addWidget(m_signupButton);
+    centerLayout->addWidget(signupButton_);
 
     signupLayout->addLayout(topLayout);
     signupLayout->addSpacerItem(new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding));
     signupLayout->addWidget(centerWidget);
     signupLayout->addSpacerItem(new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding));
 
-    connect(m_signupButton, &QPushButton::clicked, this, [this]() {
-        emit signupAttempt(m_usernameEdit->text(), m_passwordEdit->text());
+    connect(signupButton_, &QPushButton::clicked, this, [this]() {
+        emit signupAttempt(usernameEdit_->text(), passwordEdit_->text());
     });
-    connect(m_backButton, &QPushButton::clicked, this, [this]() {
+    connect(backButton_, &QPushButton::clicked, this, [this]() {
         emit backRequested();
     });
 }
@@ -97,8 +97,8 @@ void SignupWidget::setupStyles() {
             background-color: rgba(96, 81, 119, 0.8);
         }
     )");
-    m_backButton->setObjectName("back");
+    backButton_->setObjectName("back");
     
     // Дополнительные эффекты
-    m_signupButton->setCursor(Qt::PointingHandCursor);
+    signupButton_->setCursor(Qt::PointingHandCursor);
 }

@@ -1,57 +1,36 @@
 #include "mainwindow.hpp"
+#include "session.hpp"
 
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) {
+    auto& session = Session::instance();
+    connect(&session, &Session::connectionEstablished, [&session]() {
+        session.startListen();
+    });
+
     setWindowTitle("Teyo");
     resize(800, 600);
     setMinimumSize(800, 600);
     setMaximumSize(1920, 1080);
 
-    QStackedWidget *authWidget = new QStackedWidget(this);
-    m_startWidget = new StartWidget(this);
-    m_loginWidget = new LoginWidget(this);
-    m_signupWidget = new SignupWidget(this);
-    authWidget->addWidget(m_startWidget);
-    authWidget->addWidget(m_loginWidget);
-    authWidget->addWidget(m_signupWidget);
-    authWidget->setCurrentWidget(m_startWidget);
-    setCentralWidget(authWidget);
+    QStackedWidget *mainWidget = new QStackedWidget(this);
+    authWidget_ = new AuthWidget(this);
     
-    // Connect signals
-    connect(m_loginWidget, &LoginWidget::loginAttempt, [](const QString &user, const QString &pass){});
+    mainWidget->addWidget(authWidget_);
+    mainWidget->setCurrentWidget(authWidget_);
+    setCentralWidget(mainWidget);
     
-    connect(m_startWidget, &StartWidget::loginRequested, [authWidget, this](){
-        authWidget->setCurrentWidget(m_loginWidget);
+
+
+    connect(&session, &Session::loginResult, [this](const json& j) {
+        qDebug() << "Login result:" << j.value("message", "");
+        QMetaObject::invokeMethod(this, [this](){
+            // mainWidget->setCurrentWidget(chatWidget_);
+        });
     });
 
-    connect(m_loginWidget, &LoginWidget::backRequested, [authWidget, this](){
-        authWidget->setCurrentWidget(m_startWidget);
-    });
-
-    connect(m_startWidget, &StartWidget::signupRequested, [authWidget, this](){
-        authWidget->setCurrentWidget(m_signupWidget);
-    });
-
-    connect(m_signupWidget, &SignupWidget::backRequested, [authWidget, this](){
-        authWidget->setCurrentWidget(m_startWidget);
-    });
+    // Разобраться во всех сигналах и слотах
+    // Разобраться с чтением сообщений от сервера
 }
 
 MainWindow::~MainWindow() {
 }
-
-// void MainWindow::showStartWidget() {
-//     qDebug() << "showStartWidget";
-//     if(m_startWidget) {
-//         m_startWidget->show();
-//         m_startWidget->setParent(nullptr);
-//         setCentralWidget(m_startWidget);
-//     }
-// }
-
-// void MainWindow::showLoginWidget() {
-//     if (m_loginWidget) {
-//         m_loginWidget->setParent(nullptr);
-//         m_loginWidget->show();
-//         setCentralWidget(m_loginWidget);
-//     }
-// }

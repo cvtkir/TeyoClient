@@ -103,6 +103,13 @@
     "xtr1common": "cpp",
     "xtree": "cpp",
     "xutility": "cpp",
-    "random": "cpp"
+    "random": "cpp",
+    "qapplication": "cpp",
+    "cfenv": "cpp",
+    "cinttypes": "cpp",
+    "csetjmp": "cpp",
+    "scoped_allocator": "cpp",
+    "unordered_set": "cpp",
+    "qmainwindow": "cpp"
   }
 }

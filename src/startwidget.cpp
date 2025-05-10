@@ -8,28 +8,28 @@ StartWidget::StartWidget(QWidget *parent) : QWidget(parent) {
 void StartWidget::setupUI() {
     QVBoxLayout *mainLayout = new QVBoxLayout(this);
     // Title
-    m_titleLabel = new QLabel("Teyo", this);
-    m_titleLabel->setAlignment(Qt::AlignCenter);
+    titleLabel_ = new QLabel("Teyo", this);
+    titleLabel_->setAlignment(Qt::AlignCenter);
 
     // Subtitle
-    m_subtitleLabel = new QLabel("Welcome to Teyo desktop app", this);
-    m_subtitleLabel->setAlignment(Qt::AlignCenter);
+    subtitleLabel_ = new QLabel("Welcome to Teyo desktop app", this);
+    subtitleLabel_->setAlignment(Qt::AlignCenter);
 
     // Buttons
-    m_loginButton = new QPushButton("Log in", this);
-    m_signupButton = new QPushButton("Sign up", this);
+    loginButton_ = new QPushButton("Log in", this);
+    signupButton_ = new QPushButton("Sign up", this);
 
     //button layout
     QVBoxLayout *buttonLayout = new QVBoxLayout();
     buttonLayout->setAlignment(Qt::AlignCenter);
-    buttonLayout->addWidget(m_loginButton);
+    buttonLayout->addWidget(loginButton_);
     buttonLayout->addSpacing(10);
-    buttonLayout->addWidget(m_signupButton);
+    buttonLayout->addWidget(signupButton_);
 
     // Add widgets to layout
     mainLayout->addSpacerItem(new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding));
-    mainLayout->addWidget(m_titleLabel);
-    mainLayout->addWidget(m_subtitleLabel);
+    mainLayout->addWidget(titleLabel_);
+    mainLayout->addWidget(subtitleLabel_);
     mainLayout->addSpacing(40);
     mainLayout->addLayout(buttonLayout);
     mainLayout->addSpacerItem(new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding));
@@ -37,8 +37,8 @@ void StartWidget::setupUI() {
 
     
     // Connect signals
-    connect(m_loginButton, &QPushButton::clicked, this, &StartWidget::loginRequested);
-    connect(m_signupButton, &QPushButton::clicked, this, &StartWidget::signupRequested);
+    connect(loginButton_, &QPushButton::clicked, this, &StartWidget::loginRequested);
+    connect(signupButton_, &QPushButton::clicked, this, &StartWidget::signupRequested);
 }
 
 
@@ -92,12 +92,12 @@ void StartWidget::setupStyles() {
 
 
     // Apply object names for specific styling
-    m_titleLabel->setObjectName("title");
-    m_subtitleLabel->setObjectName("subtitle");
-    m_loginButton->setObjectName("login");
-    m_signupButton->setObjectName("signup");
+    titleLabel_->setObjectName("title");
+    subtitleLabel_->setObjectName("subtitle");
+    loginButton_->setObjectName("login");
+    signupButton_->setObjectName("signup");
 
     // Cursors
-    m_loginButton->setCursor(Qt::PointingHandCursor);
-    m_signupButton->setCursor(Qt::PointingHandCursor);
+    loginButton_->setCursor(Qt::PointingHandCursor);
+    signupButton_->setCursor(Qt::PointingHandCursor);
 }
