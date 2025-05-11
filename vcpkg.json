@@ -4,6 +4,6 @@
 	"dependencies": [
 	"boost",
     "nlohmann-json"
-  ],
+  ], 
   "builtin-baseline": "33b302a46eff35d8a308b20465b53249eee77a31"
 }

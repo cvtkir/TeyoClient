@@ -36,11 +36,6 @@ Session& Session::instance() {
     return instance;
 }
 
-// Session& Session::instance() {
-//     static net::io_context default_ioc;
-//     static Session instance(default_ioc);
-//     return instance;
-// }
 
 void Session::connect(const std::string& host, const std::string& port) {
     host_ = host;
@@ -96,9 +91,9 @@ void Session::doWrite(const json& j) {
         return;
     }
     try{
-        qDebug() << "in doWrite";
+        // qDebug() << "in doWrite";
         std::string message = j.dump();
-        qDebug() << message;
+        // qDebug() << message;
         ws_.async_write(
             net::buffer(message),
             [this](beast::error_code ec, std::size_t) {

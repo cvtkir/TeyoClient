@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include <QStackedWidget>
 #include "authwidget.hpp"
+#include "chatwidget.hpp"
 
 
 class MainWindow : public QMainWindow {
@@ -14,7 +15,7 @@ public:
 
 private:
     AuthWidget *authWidget_;
-    // ChatWidget *chatWidget_; 
+    ChatWidget *chatWidget_; 
 
 };
 

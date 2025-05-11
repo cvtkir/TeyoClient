@@ -14,17 +14,19 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) {
 
     QStackedWidget *mainWidget = new QStackedWidget(this);
     authWidget_ = new AuthWidget(this);
+    chatWidget_ = new ChatWidget(this);
     
     mainWidget->addWidget(authWidget_);
+    mainWidget->addWidget(chatWidget_);
     mainWidget->setCurrentWidget(authWidget_);
     setCentralWidget(mainWidget);
     
 
 
-    connect(&session, &Session::loginResult, [this](const json& j) {
+    connect(&session, &Session::loginResult, [this, mainWidget](const json& j) {
         qDebug() << "Login result:" << j.value("message", "");
-        QMetaObject::invokeMethod(this, [this](){
-            // mainWidget->setCurrentWidget(chatWidget_);
+        QMetaObject::invokeMethod(this, [this, mainWidget](){
+            mainWidget->setCurrentWidget(chatWidget_);
         });
     });
 
