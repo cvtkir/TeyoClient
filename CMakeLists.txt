@@ -14,7 +14,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_AUTOMOC ON)
 # set(CMAKE_AUTOUIC ON)
 # set(CMAKE_AUTORCC ON)
-set(Qt6_DIR "C:/Qt/6.9.0/msvc2022_64/lib/cmake/Qt6")
+set(Qt6_DIR "C:/dev/qtbaseinstall/lib/cmake/Qt6")
 
 
 
@@ -35,7 +35,7 @@ add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
 )
 
 
-find_package(Boost REQUIRED)
+find_package(Boost REQUIRED COMPONENTS asio beast)
 find_package(nlohmann_json REQUIRED)
 find_package(Qt6 REQUIRED COMPONENTS Core Gui Widgets)
 
@@ -47,7 +47,8 @@ target_include_directories(${PROJECT_NAME}
 
 target_link_libraries(${PROJECT_NAME}
 	PRIVATE
-	Boost::boost
+	Boost::asio
+    Boost::beast
 	nlohmann_json::nlohmann_json
 	Qt6::Core 
 	Qt6::Gui 
